@@ -1,2 +1,2 @@
 # l-tmy.githud.io
-test
+l-tmy.githud.io
