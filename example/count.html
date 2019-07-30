@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>抽奖</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	    *{
+	    	margin:0;
+	    	padding:0;
+	    }
+		#container{
+			height:100vh;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			font-size: 60px;
+			font-family: '微软雅黑';
+		}
+		.btn-box{
+			flex-basis: 140px;
+			display: flex;
+			align-items:center;
+			justify-content:center;
+		}
+		.btn{
+			padding: 5px 20px;
+			margin: 0 50px;
+			border-radius:6px;
+			color:#fff;
+			cursor:pointer;
+		}
+		.begin{
+			background: #0768d2;
+		}
+		.end{
+			background: red;
+			display: none;
+		}
+		.update{
+			background: #797973;
+		}
+		.content{
+			flex: 1;
+			display: flex;
+			align-items:center;
+			justify-content:center;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function () {			
+			let usersNameArr = [
+				'Alice Zhang', 
+				'Alina Liu',
+				'Amanda Zhao',
+				'Baoquan Ding',
+				'Bing Liu',
+				'Chuanrong Bu',
+				'Daisy Yan',
+				'Dan Yuan',
+				'Donghai Yu',
+				'Guodong Wang',
+				'Guohua Wang',
+				'Haili Yang',
+				'Hongjing Shi',
+				'Jugang Feng',
+				'Kevin Yang',
+				'Lei Wang',
+				'Martha Yang',
+				'Nan Hou',
+				'Peide Zhao',
+				'Qian Guo',
+				'Qunjie Ma',
+				'Susan Li',
+				'Sai Liu',
+				'Shengguang Zhou',
+				'Sherry Ye',
+				'Shijie Ji',
+				'Songli Liu',
+				'Sophia Xiang',
+				'Tiger Liu',
+				'Tingting Liu',
+				'Wenyan Xie',
+				'Xianlong Lin',
+				'Xiaowei Tang',
+				'Xinhong Zhang',
+				'Yang Liu',
+				'Yi Liu'
+			];
+			let container = document.getElementById('container');
+			let userName = document.getElementById('userName');
+			let beginBtn = document.getElementsByClassName('begin')[0];
+			let endBtn = document.getElementsByClassName('end')[0];
+			let update = document.getElementsByClassName('update')[0];
+			let index;
+			let timer;
+
+			if (localStorage.getItem('indexStr')){
+				localStorage.getItem('indexStr').split(',').forEach(function(item) {
+					usersNameArr.forEach(function (user, i){
+						if (user == item) {
+							usersNameArr.splice(i, 1)
+						}
+					})
+				})
+			}
+
+			console.log(usersNameArr)
+			beginBtn.onclick =function () {
+				console.log(usersNameArr)
+				endBtn.style.display = 'block';
+				beginBtn.style.display = 'none';
+				timer = setInterval(function(){
+					if(usersNameArr.length>0){
+						index = Math.floor(Math.random()*usersNameArr.length)
+						userName.innerHTML = usersNameArr[index]
+					}else{
+						userName.innerHTML = '没有待抽奖人'
+						clearInterval(timer)
+					}
+				},100)
+			}
+			endBtn.onclick = function () {
+				beginBtn.style.display = 'block';
+				endBtn.style.display = 'none';
+				clearInterval(timer)
+				if(index || index === 0) {					
+					let indexStr = ''
+					indexStr = localStorage.getItem('indexStr') +  usersNameArr[index] + ','
+					localStorage.setItem('indexStr', indexStr)
+					usersNameArr.splice(index,1)
+				}
+			}
+			update.onclick=function() {
+				beginBtn.style.display = 'block';
+				endBtn.style.display = 'none';
+				clearInterval(timer)
+				usersNameArr =  [
+					'Alice Zhang', 
+					'Alina Liu',
+					'Amanda Zhao',
+					'Baoquan Ding',
+					'Bing Liu',
+					'Chuanrong Bu',
+					'Daisy Yan',
+					'Dan Yuan',
+					'Donghai Yu',
+					'Guodong Wang',
+					'Guohua Wang',
+					'Haili Yang',
+					'Hongjing Shi',
+					'Jugang Feng',
+					'Kevin Yang',
+					'Lei Wang',
+					'Martha Yang',
+					'Nan Hou',
+					'Peide Zhao',
+					'Qian Guo',
+					'Qunjie Ma',
+					'Susan Li',
+					'Sai Liu',
+					'Shengguang Zhou',
+					'Sherry Ye',
+					'Shijie Ji',
+					'Songli Liu',
+					'Sophia Xiang',
+					'Tiger Liu',
+					'Tingting Liu',
+					'Wenyan Xie',
+					'Xianlong Lin',
+					'Xiaowei Tang',
+					'Xinhong Zhang',
+					'Yang Liu',
+					'Yi Liu'
+				];
+				userName.innerHTML = '抽奖待开始'
+				localStorage.setItem('indexStr', '')
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id='container'>
+		<div class="btn-box">
+			<span class="btn begin">开始</span>
+			<span class="btn end">结束</span>
+			<span class="btn update">重新</span>
+		</div>
+		<div class='content'>
+			<span id="userName">抽奖待开始</span>
+		</div>
+	</div>
+</body>
+</html>
